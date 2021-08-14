@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+    echo "Usage: $0 [ut|e2e]"
+    exit 1
+fi
+
+OPTION=$1
+
+BUILD_DIR="build"
+mkdir -p $BUILD_DIR
+
+function ecmake() {
+    cmake -B $BUILD_DIR -S . \
+        -DBUILD_TESTS=OFF \
+        -DCMAKE_BUILD_TYPE=RELEASE \
+        -DCOVERAGE=OFF \
+        $@
+}
+
+function debug-ecmake() {
+    ecmake -DCMAKE_BUILD_TYPE=DEBUG $@
+}
+
+
+function target() {
+    cmake --build $BUILD_DIR --target $@
+}
+
+case $OPTION in
+    "release")
+        ecmake && target susolver
+    ;;
+    "debug")
+        debug-ecmake && target susolver
+    ;;
+    "ut")
+        debug-ecmake -DBUILD_TESTS=ON && target ut
+    ;;
+    "e2e")
+        ecmake -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=RELWITHDEBINFO && target e2e
+    ;;
+    "coverage")
+        debug-ecmake -DBUILD_TESTS=ON -DCOVERAGE=ON && target coverage
+    ;;
+    "format")
+        ecmake && target format
+    ;;
+    *)
+        echo "Wrong option: $OPTION"
+    ;;
+esac

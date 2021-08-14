@@ -1,0 +1,4 @@
+libgtest-dev
+clang-format
+gcovr
+ccache

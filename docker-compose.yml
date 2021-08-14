@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  sdk:
+    build: .
+    volumes: 
+     - .:/susolver
+     - ccache:/.ccache
+     - cache:/.cache
+
+volumes:
+  ccache:
+    driver: local
+  cache:
+    driver: local
