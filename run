@@ -48,6 +48,9 @@ case $OPTION in
     "format")
         ecmake && target format
     ;;
+    "format-check")
+        ecmake && target format_check # TODO
+    ;;
     *)
         echo "Wrong option: $OPTION"
     ;;

@@ -52,6 +52,10 @@ Install dev packages like above (but with `_dev` suffix):
 xargs -a dependencies_dev.txt sudo apt install -y
 pip3 install -r dependencies_dev_pip.txt
 ```
+Install googletest:
+```
+cd /usr/src/googletest ; cmake . ; cmake --build . --target install
+```
 
 and call `cmake` like this:
 
