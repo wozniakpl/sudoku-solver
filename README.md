@@ -40,7 +40,7 @@ It should give you an easy board with 10 numbers to fill.
 
 You can try solving it:
 ```
-./susolver -i $(./bin/susolver -g 10 -s 42)
+./susolver -i $(./susolver -g 10 -s 42)
 ```
 
 For now, only Brute-Force is implemented. More algorithms will be added in the future.
