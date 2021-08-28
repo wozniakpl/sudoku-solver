@@ -32,15 +32,17 @@ For convenience, you can also call `./run release` to do the steps above.
 
 The binary is accessible under `<build_dir>/bin/susolver`.
 
+You can install the app by calling `sudo make install` or just `make install` but you will need to specify `CMAKE_INSTALL_PREFIX`.
+
 Try generating a sudoku with the `generate` command:
 ```
-./susolver --generate 10 --seed 42
+susolver --generate 10 --seed 42
 ```
 It should give you an easy board with 10 numbers to fill.
 
 You can try solving it:
 ```
-./susolver -i $(./susolver -g 10 -s 42)
+susolver -i $(susolver -g 10 -s 42)
 ```
 
 For now, only Brute-Force is implemented. More algorithms will be added in the future.
