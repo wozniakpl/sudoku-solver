@@ -10,14 +10,6 @@ def run_successfully(application):
     return result
 
 
-def test_running_without_args(app):
-    _ = run_successfully(app)
-
-
-def test_running_help(app):
-    _ = run_successfully(app)
-
-
 def to_string(board):
     return "".join(["".join([str(item) for item in arr]) for arr in board])
 
@@ -50,13 +42,12 @@ def create_simple_problem():
     return case(problem, testing_board)
 
 
-def create_medium_problem():
-    problem = copy.deepcopy(testing_board)
-    for i in range(0, 5):
-        problem[7][i] = 0
-    problem[8] = zeros
+def test_running_without_args(app):
+    _ = run_successfully(app)
 
-    return case(problem, testing_board)
+
+def test_running_help(app):
+    _ = run_successfully(app.help())
 
 
 def test_solving_simple_sudoku(app):
@@ -65,16 +56,23 @@ def test_solving_simple_sudoku(app):
     assert result.stdout.rstrip() == solution
 
 
-@pytest.mark.skip(reason="not fast yet")
-def test_solving_medium_sudoku(app):
-    sudoku, solution = create_medium_problem()
-    result = run_successfully(app.inline(sudoku))
-    assert result.stdout.rstrip() == solution
-
-
-@pytest.mark.parametrize("size", [1, 5, 10])
-def test_generating_random_board(app, size):
+def generate_board(app, size):
     result = run_successfully(app.generate(size))
     board = result.stdout.rstrip()
     assert len(board) == 81
     assert list(board).count("0") == size
+    return board
+
+
+@pytest.mark.parametrize("size", [1, 5, 10])
+def test_generating_random_board(app, size):
+    _ = generate_board(app, size)
+
+
+@pytest.mark.parametrize("size", [1, 5, 10])
+def test_solving_random_board(app, size):
+    board = generate_board(app, size)
+    _ = run_successfully(app.inline(board))
+
+
+# TODO: add `--with-solution` so it prints the problem and the solution
