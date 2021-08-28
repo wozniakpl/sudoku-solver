@@ -36,15 +36,43 @@ void applyHorizontalPermutation(const Permutation &permutation,
   listOfCells = newMatrix;
 }
 
+void applyVerticalGroupPermutation(const Permutation &permutation,
+                                   ListOfCells &listOfCells) {
+  ListOfCells newMatrix;
+  newMatrix.reserve(9);
+  for (size_t i = 0; i < 9; i++) {
+    const auto thirds = i / 3;
+    const auto index = permutation[thirds] * 3 + i % 3;
+    newMatrix.push_back(listOfCells[index]);
+  }
+  listOfCells = newMatrix;
+}
+void applyHorizontalGroupPermutation(const Permutation &permutation,
+                                     ListOfCells &listOfCells) {
+  ListOfCells newMatrix;
+  for (size_t i = 0; i < 9; i++) {
+    Sudoku::Cells cells;
+    cells.reserve(9);
+    for (size_t j = 0; j < 9; j++) {
+      const auto thirds = j / 3;
+      const auto column = permutation[thirds] * 3 + j % 3;
+      cells.push_back(listOfCells[i][column]);
+    }
+    newMatrix.push_back(cells);
+  }
+  listOfCells = newMatrix;
+}
+
 void shuffle(ListOfCells &matrix, std::mt19937 &generator) {
+  const auto &permutation = [&]() {
+    return *Algorithm::Utils::selectRandom(
+        possiblePermutations.begin(), possiblePermutations.end(), generator);
+  };
   for (size_t i = 0; i < 3; i++) {
-    const auto &permutation = [&]() {
-      return *Algorithm::Utils::selectRandom(
-          possiblePermutations.begin(), possiblePermutations.end(), generator);
-    };
     applyVerticalPermutation(permutation(), matrix, i);
     applyHorizontalPermutation(permutation(), matrix, i);
-    // TODO: by groups
   }
+  applyVerticalGroupPermutation(permutation(), matrix);
+  applyHorizontalGroupPermutation(permutation(), matrix);
 }
 } // namespace Permutations

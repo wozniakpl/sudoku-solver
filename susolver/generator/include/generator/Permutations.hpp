@@ -12,6 +12,8 @@ using Permutation = std::vector<size_t>;
 void applyVerticalPermutation(const Permutation &, ListOfCells &, const size_t);
 void applyHorizontalPermutation(const Permutation &, ListOfCells &,
                                 const size_t);
+void applyVerticalGroupPermutation(const Permutation &, ListOfCells &);
+void applyHorizontalGroupPermutation(const Permutation &, ListOfCells &);
 
 void shuffle(ListOfCells &, std::mt19937 &);
 } // namespace Permutations

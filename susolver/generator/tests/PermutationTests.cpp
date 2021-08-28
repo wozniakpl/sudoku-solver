@@ -97,3 +97,53 @@ TEST_F(GeneratorTests, ApplyingHorizontalPermutation) {
   EXPECT_EQ(matrix[0][4], before[0][4]);
   EXPECT_EQ(matrix[0][5], before[0][3]);
 }
+
+TEST_F(GeneratorTests, ApplyingVerticalGroupPermutation) {
+  Permutations::ListOfCells listOfCells;
+  auto matrix = getInitialMatrix();
+  const auto before = matrix;
+
+  const auto permutation = std::vector<size_t>{0, 2, 1};
+  EXPECT_EQ(matrix[0], before[0]);
+  EXPECT_EQ(matrix[3], before[3]);
+  EXPECT_EQ(matrix[6], before[6]);
+  Permutations::applyVerticalGroupPermutation(permutation, matrix);
+  EXPECT_EQ(matrix[0], before[0]);
+  EXPECT_EQ(matrix[3], before[6]);
+  EXPECT_EQ(matrix[6], before[3]);
+
+  matrix = before;
+  const auto second_permutation = std::vector<size_t>{2, 1, 0};
+  EXPECT_EQ(matrix[0], before[0]);
+  EXPECT_EQ(matrix[3], before[3]);
+  EXPECT_EQ(matrix[6], before[6]);
+  Permutations::applyVerticalGroupPermutation(second_permutation, matrix);
+  EXPECT_EQ(matrix[0], before[6]);
+  EXPECT_EQ(matrix[3], before[3]);
+  EXPECT_EQ(matrix[6], before[0]);
+}
+
+TEST_F(GeneratorTests, ApplyingHorizontalGroupPermutation) {
+  Permutations::ListOfCells listOfCells;
+  auto matrix = getInitialMatrix();
+  const auto before = matrix;
+
+  const auto permutation = std::vector<size_t>{0, 2, 1};
+  EXPECT_EQ(matrix[0][0], before[0][0]);
+  EXPECT_EQ(matrix[0][3], before[0][3]);
+  EXPECT_EQ(matrix[0][6], before[0][6]);
+  Permutations::applyHorizontalGroupPermutation(permutation, matrix);
+  EXPECT_EQ(matrix[0][0], before[0][0]);
+  EXPECT_EQ(matrix[0][3], before[0][6]);
+  EXPECT_EQ(matrix[0][6], before[0][3]);
+
+  matrix = before;
+  const auto second_permutation = std::vector<size_t>{2, 1, 0};
+  EXPECT_EQ(matrix[0][0], before[0][0]);
+  EXPECT_EQ(matrix[0][3], before[0][3]);
+  EXPECT_EQ(matrix[0][6], before[0][6]);
+  Permutations::applyHorizontalGroupPermutation(second_permutation, matrix);
+  EXPECT_EQ(matrix[0][0], before[0][6]);
+  EXPECT_EQ(matrix[0][3], before[0][3]);
+  EXPECT_EQ(matrix[0][6], before[0][0]);
+}
