@@ -1,6 +1,6 @@
 set(MODULE_NAME AlgorithmTests)
 
-add_executable(${MODULE_NAME} BruteForceTests.cpp UtilsTests.cpp)
+add_executable(${MODULE_NAME} UtilsTests.cpp)
 
 target_link_libraries(
     ${MODULE_NAME}
