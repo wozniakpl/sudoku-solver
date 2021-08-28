@@ -30,6 +30,9 @@ function target() {
 }
 
 case $OPTION in
+    "install")
+        ecmake && target install
+    ;;
     "release")
         ecmake && target susolver
     ;;

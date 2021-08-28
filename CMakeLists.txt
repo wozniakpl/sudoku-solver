@@ -30,6 +30,8 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "MINSIZEREL")
     add_compile_options(-Os -DNDEBUG)
 endif()
 
+add_compile_options(-Wall -Wextra -Werror)
+
 if(COVERAGE)
     add_compile_options(-fprofile-arcs -ftest-coverage -fPIC -O0)
     add_link_options("--coverage")

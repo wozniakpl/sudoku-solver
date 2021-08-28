@@ -5,8 +5,7 @@
 #include <algorithm>
 
 namespace {
-Permutations::ListOfCells getRandomMatrix(std::mt19937 &generator,
-                                          unsigned size) {
+Permutations::ListOfCells getRandomMatrix(std::mt19937 &generator) {
   auto matrix = Sudoku::getInitialMatrix();
   Permutations::shuffle(matrix, generator);
   return matrix;
@@ -53,7 +52,7 @@ Sudoku::Generated generateRandomGrid(unsigned seed, unsigned size) {
   if (size > 81) {
     throw std::invalid_argument("Size must be between 0 and 81");
   }
-  const Permutations::ListOfCells matrix = getRandomMatrix(generator, size);
+  const Permutations::ListOfCells matrix = getRandomMatrix(generator);
   const auto subgrids = convertToSubgrids(matrix);
   auto problem = Sudoku::Grid(subgrids);
   const auto solution = problem;

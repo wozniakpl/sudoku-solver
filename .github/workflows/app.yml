@@ -17,12 +17,12 @@ jobs:
       run: |
         xargs -a dependencies.txt sudo apt install -y
         pip3 install -r dependencies_pip.txt
-    - name: build release
-      run: ./run release
+    - name: install app
+      run: sudo ./run install
     - name: run help
-      run: ./build/bin/susolver --help
+      run: susolver --help
     - name: solve simple board
-      run: ./tests/smoke.sh ./build/bin/susolver
+      run: ./tests/smoke.sh susolver
 
   dev:
     runs-on: ubuntu-latest

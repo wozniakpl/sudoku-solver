@@ -93,8 +93,8 @@ Subgrid Grid::getBox(std::uint8_t index) const {
   const auto xrange = std::make_pair(3 * (index % 3), 3 * (index % 3) + 2);
   const auto yrange = std::make_pair(3 * (index / 3), 3 * (index / 3) + 2);
   std::uint8_t i = 0;
-  for (size_t y = yrange.first; y <= yrange.second; y++) {
-    for (size_t x = xrange.first; x <= xrange.second; x++) {
+  for (std::uint8_t y = yrange.first; y <= yrange.second; y++) {
+    for (std::uint8_t x = xrange.first; x <= xrange.second; x++) {
       output[i++] = matrix[x].getCells()[y];
     }
   }
