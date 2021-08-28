@@ -22,7 +22,7 @@ jobs:
     - name: run help
       run: ./build/bin/susolver --help
     - name: solve simple board
-      run: ./tests/smoke.sh
+      run: ./tests/smoke.sh ./build/bin/susolver
 
   dev:
     runs-on: ubuntu-latest
