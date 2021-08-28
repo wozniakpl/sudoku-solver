@@ -43,6 +43,10 @@ class App:
         self.arguments.extend(["--generate", str(size)])
         return self
 
+    def with_solution(self):
+        self.arguments.append("--with-solution")
+        return self
+
 
 @pytest.fixture
 def app(request):

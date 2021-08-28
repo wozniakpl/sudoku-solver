@@ -22,7 +22,8 @@ auto createOptionsDescription() {
       "Grid written line by line, e.g. 123000456789... with total of 81 "
       "numbers from 0 to 9")("generate,g", po::value<unsigned>(),
                              "Return random board with given empty cells")(
-      "seed,s", po::value<unsigned>(), "Seed for random number generator");
+      "seed,s", po::value<unsigned>(), "Seed for random number generator")(
+      "with-solution,l", "Will print solution, when generating board");
   return desc;
 }
 
@@ -53,8 +54,11 @@ auto generateSudoku(const po::variables_map &vm) {
     std::random_device os_seed;
     return os_seed();
   }();
-  const auto grid = Sudoku::generateRandomGrid(seed, amountOfEmptyCells);
-  std::cout << toString(grid) << std::endl;
+  const auto generated = Sudoku::generateRandomGrid(seed, amountOfEmptyCells);
+  std::cout << toString(generated.problem) << std::endl;
+  if (vm.count("with-solution")) {
+    std::cout << toString(generated.solution) << std::endl;
+  }
   return 0;
 }
 

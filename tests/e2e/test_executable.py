@@ -50,13 +50,17 @@ def test_running_help(app):
     _ = run_successfully(app.help())
 
 
+def get_solution(result):
+    return result.stdout.rstrip()
+
+
 def test_solving_simple_sudoku(app):
     sudoku, solution = create_simple_problem()
     result = run_successfully(app.inline(sudoku))
-    assert result.stdout.rstrip() == solution
+    assert get_solution(result) == solution
 
 
-def generate_board(app, size):
+def generate_board_without_solution(app, size):
     result = run_successfully(app.generate(size))
     board = result.stdout.rstrip()
     assert len(board) == 81
@@ -64,15 +68,26 @@ def generate_board(app, size):
     return board
 
 
+def generate_board_with_solution(app, size):
+    result = run_successfully(app.generate(size).with_solution())
+    lines = result.stdout.rstrip().split("\n")
+    assert len(lines) == 2
+    board = lines[0]
+    solution = lines[1]
+    assert len(board) == 81
+    assert len(solution) == 81
+    assert list(board).count("0") == size
+    assert list(solution).count("0") == 0
+    return board, solution
+
+
 @pytest.mark.parametrize("size", [1, 5, 10])
 def test_generating_random_board(app, size):
-    _ = generate_board(app, size)
+    _ = generate_board_without_solution(app, size)
 
 
 @pytest.mark.parametrize("size", [1, 5, 10])
 def test_solving_random_board(app, size):
-    board = generate_board(app, size)
-    _ = run_successfully(app.inline(board))
-
-
-# TODO: add `--with-solution` so it prints the problem and the solution
+    board, solution = generate_board_with_solution(app, size)
+    result = run_successfully(app.inline(board))
+    assert get_solution(result) == solution

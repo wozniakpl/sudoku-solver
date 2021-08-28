@@ -48,15 +48,16 @@ Permutations::ListOfCells getInitialMatrix() {
   return rows;
 }
 
-Sudoku::Grid generateRandomGrid(unsigned seed, unsigned size) {
+Sudoku::Generated generateRandomGrid(unsigned seed, unsigned size) {
   std::mt19937 generator(seed);
   if (size > 81) {
     throw std::invalid_argument("Size must be between 0 and 81");
   }
   const Permutations::ListOfCells matrix = getRandomMatrix(generator, size);
   const auto subgrids = convertToSubgrids(matrix);
-  auto grid = Sudoku::Grid(subgrids);
-  setRandomFieldsBlank(grid, size, generator);
-  return grid;
+  auto problem = Sudoku::Grid(subgrids);
+  const auto solution = problem;
+  setRandomFieldsBlank(problem, size, generator);
+  return Sudoku::Generated{problem, solution};
 }
 } // namespace Sudoku
