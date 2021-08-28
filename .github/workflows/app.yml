@@ -22,10 +22,7 @@ jobs:
     - name: run help
       run: ./build/bin/susolver --help
     - name: solve simple board
-      run: |
-        export BOARD=$(./build/bin/susolver -s 42 -g 5)
-        echo $BOARD
-        ./build/bin/susolver -i $BOARD
+      run: ./tests/smoke.sh
 
   dev:
     runs-on: ubuntu-latest
