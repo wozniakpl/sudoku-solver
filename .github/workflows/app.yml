@@ -1,0 +1,52 @@
+name: Susolver CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: update packages
+      run: sudo apt update
+    - name: install dependencies
+      run: |
+        xargs -a dependencies.txt sudo apt install -y
+        pip3 install -r dependencies_pip.txt
+    - name: build release
+      run: ./run release
+    - name: run help
+      run: ./build/bin/susolver --help
+    - name: solve simple board
+      run: |
+        export BOARD=$(./build/bin/susolver -s 42 -g 5)
+        echo $BOARD
+        ./build/bin/susolver -i $BOARD
+
+  dev:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: update packages
+      run: sudo apt update
+    - name: install dependencies
+      run: |
+        xargs -a dependencies.txt sudo apt install -y
+        pip3 install -r dependencies_pip.txt
+        pip3 install -r dependencies_dev_pip.txt
+        xargs -a dependencies_dev.txt sudo apt install -y
+    - name: install gtest manually
+      run: echo "Installing gtest on a runner is pain."
+    - name: run format-check
+      run: ./run format-check
+    # - name: run ut
+    #   run: ./run ut
+    - name: run e2e
+      run: ./run e2e
+    # - name: run coverage
+    #   run: ./run coverage
+
